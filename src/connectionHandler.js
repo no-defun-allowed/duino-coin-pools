@@ -79,11 +79,14 @@ const handle = (conn) => {
             mining.miningHandler(conn, data, mainListener, false, false);
 
         } else if (data[0] === 'JOBXX') {
+            // Avoid revoxhere/duino-coin#1029
             if (!data[1]) {
                 conn.write('NO,Not enough data');
                 return conn.destroy();
             }
-            mining.miningHandler(conn, data, mainListener, true, false);
+            conn.write('NO,xxhash mining is disabled');
+            return conn.destroy();
+            // mining.miningHandler(conn, data, mainListener, true, false);
 
         } else if (data[0] === 'MOTD') {
             let finalMOTD = motd;
